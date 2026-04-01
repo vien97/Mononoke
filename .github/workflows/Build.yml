@@ -341,18 +341,20 @@ jobs:
           fi
         done
 
-- name: Push Update
-  run: |
-    cd Mononoke-repo
-    if [[ -n $(git status -s) ]]; then
-      git config --local user.email "${{ github.actor }}@users.noreply.github.com"
-      git config --local user.name "${{ github.actor }}"
-      git add -A
-      git commit -m "Update(Rules): $(TZ='Asia/Shanghai' date +'%Y-%m-%d %H:%M:%S')"
-      git push https://${{ secrets.COLDVVATER_TOKEN }}@github.com/Coldvvater/Mononoke.git master
-    else
-      echo "No changes to commit."
-    fi
+    - name: Push Update
+      run: |
+        cd Mononoke-repo
+          if [[ -n $(git status -s) ]]; then
+            git config --local user.email "${{ github.actor }}@users.noreply.github.com"
+            git config --local user.name "${{ github.actor }}"
+            git add -A
+            git commit -m "Update(Rules): $(TZ='Asia/Shanghai' date +'%Y-%m-%d %H:%M:%S')"
+            git push https://${{ secrets.COLDVVATER_TOKEN }}@github.com/Coldvvater/Mononoke.git master
+
+          else
+            echo "No changes to commit."  
+            echo "Không có thay đổi nào để cam kết."
+          fi
 
     - name: Cleanup Workflow
       uses: Mattraks/delete-workflow-runs@main
